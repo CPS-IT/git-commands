@@ -43,6 +43,11 @@ while [ "$1" != "" ]; do
     shift
 done
 
+GIT_MAIN_BRANCH=main
+if git branch --all | grep master > /dev/null; then
+   GIT_MAIN_BRANCH=master
+fi
+
 if `git branch --no-color | grep -q '^\*'`; then
     OUTPUT=""
     HEAD=""
@@ -65,7 +70,7 @@ if `git branch --no-color | grep -q '^\*'`; then
         USER=`git config --get user.name`
         HEAD="$DATE         [RELEASE] Release of $DIR $BRANCH ($USER)"$'\n'
         if [ "$REFLIST" == "" ]; then
-            REFLIST="master..HEAD"
+            REFLIST="$GIT_MAIN_BRANCH..HEAD"
         fi
     fi
 
